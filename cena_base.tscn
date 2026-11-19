@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://co4jj1yc0c18y"]
+
+[ext_resource type="Script" uid="uid://c7dyun5sfdhrp" path="res://jogador.gd" id="1_mdsis"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eglsu"]
+albedo_color = Color(0.043137256, 0.16470589, 0.2, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0bqc2"]
+size = Vector2(30, 30)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0bqc2"]
+albedo_color = Color(0.65882355, 0.83137256, 0.9019608, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0bqc2"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0bqc2"]
+emission_shape = 3
+emission_box_extents = Vector3(15, 0.5, 15)
+direction = Vector3(0, -1, 0)
+spread = 10.0
+initial_velocity_min = 0.5
+initial_velocity_max = 1.5
+gravity = Vector3(0.4, -9.8, 0)
+scale_min = 0.5
+scale_max = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdsis"]
+shading_mode = 0
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_eglsu"]
+material = SubResource("StandardMaterial3D_mdsis")
+size = Vector2(0.08, 0.08)
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_mdsis"]
+_shader_parameters = {
+&"bias_distance": null,
+&"blend_sharpness": null,
+&"depth_blur": null,
+&"distant_normal_scale": null,
+&"flat_terrain_normals": null,
+&"general_uniforms": null,
+&"ground_level": null,
+&"mipmap_bias": null,
+&"mipmaps": null,
+&"private": null,
+&"region_blend": null
+}
+show_checkered = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nvucx"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+metadata/terrain3d_generated_material = true
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_t8ibo"]
+generated_type = 1
+height_offset = 0.5
+density = 10.0
+material_override = SubResource("StandardMaterial3D_nvucx")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_ttqf8"]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_t8ibo")])
+
+[node name="Cena base" type="Node3D" unique_id=401251139]
+
+[node name="agua" type="MeshInstance3D" parent="." unique_id=1883477662]
+material_override = SubResource("StandardMaterial3D_eglsu")
+mesh = SubResource("PlaneMesh_0bqc2")
+
+[node name="gelo" type="CSGBox3D" parent="." unique_id=1944024833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1081543, 1.5, 1.3910522)
+use_collision = true
+size = Vector3(1000, 2, 1000)
+material = SubResource("StandardMaterial3D_0bqc2")
+
+[node name="buraco" type="CSGCylinder3D" parent="gelo" unique_id=1397566721]
+operation = 2
+radius = 1.5
+height = 4.0
+
+[node name="jogador" type="CharacterBody3D" parent="." unique_id=945182020]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 5)
+script = ExtResource("1_mdsis")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="jogador" unique_id=245459807]
+shape = SubResource("CapsuleShape3D_0bqc2")
+
+[node name="Camera3D" type="Camera3D" parent="jogador" unique_id=1423228649]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+current = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=767709132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+cast_shadow = 0
+amount = 600
+lifetime = 8.0
+preprocess = 8.0
+visibility_aabb = AABB(-16, -16, -16, 32, 32, 32)
+process_material = SubResource("ParticleProcessMaterial_0bqc2")
+draw_pass_1 = SubResource("QuadMesh_eglsu")
+
+[node name="Terrain3D" type="Terrain3D" parent="." unique_id=796979140]
+material = SubResource("Terrain3DMaterial_mdsis")
+assets = SubResource("Terrain3DAssets_ttqf8")
+displacement_sharpness = 0.5
+show_checkered = true
+top_level = true
+metadata/_edit_lock_ = true

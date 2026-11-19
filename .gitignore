@@ -1,0 +1,17 @@
+# Godot cache
+.godot/
+.import/
+
+# Android
+/android/
+
+# C# builds (caso use Mono/.NET)
+.mono/
+bin/
+obj/
+
+# Temporários
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
